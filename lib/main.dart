@@ -71,8 +71,11 @@ class MyApp extends StatelessWidget {
               ),
               title: Text(
                   students[index].firstName + " " + students[index].lastName),
-              subtitle: Text(
-                  "Sınavdan Aldığı Not : " + students[index].grade.toString()),
+              subtitle: Text("Sınavdan Aldığı Not : " +
+                  students[index].grade.toString() +
+                  " [" +
+                  students[index].getStatus +
+                  "]"),
               trailing: buildStatusIcon(students[index].grade),
               onTap: () {
                 print(

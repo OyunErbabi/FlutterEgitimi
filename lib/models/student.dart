@@ -13,4 +13,16 @@ class Student {
     status = "Geçti";
     image = _image;
   }
+
+  String get getStatus {
+    String outputText = "";
+    if (grade >= 50) {
+      outputText = "Geçti";
+    } else if (grade >= 40) {
+      outputText = "Bütünlemeye Kaldı";
+    } else {
+      outputText = "Kaldı";
+    }
+    return outputText;
+  }
 }
