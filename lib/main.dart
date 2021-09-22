@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:temel_flutter/models/student.dart';
 
@@ -7,8 +9,16 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   String appTitle = "Yıkıklar Takip Sistemi";
+
+  String seciliOgrenci = "";
+
   List<Student> students = [
     Student(
         "Akif", "ERSOY", 70, "https://s1.dmcdn.net/v/1U46Y1Vj_axfqWLTO/x1080"),
@@ -20,7 +30,6 @@ class MyApp extends StatelessWidget {
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWg4rCQitwySMfgseQ7cHqeiYXQEWjnGvudCHi2alCtgIz_hJMF0W1Y1sWCab8jS-N1fU&usqp=CAU")
   ];
 
-  //var ogrenciler = ["Engin", "Kerem", "Berkay"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,49 +68,152 @@ class MyApp extends StatelessWidget {
   }
 
   Widget buildBody(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-            child: ListView.builder(
-          itemCount: students.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(students[index].image),
-              ),
-              title: Text(
-                  students[index].firstName + " " + students[index].lastName),
-              subtitle: Text("Sınavdan Aldığı Not : " +
-                  students[index].grade.toString() +
-                  " [" +
-                  students[index].getStatus +
-                  "]"),
-              trailing: buildStatusIcon(students[index].grade),
-              onTap: () {
-                print(
-                    students[index].firstName + " " + students[index].lastName);
-              },
-            );
-          },
-        )),
-        Center(
-          child: ElevatedButton(
-            child: Title(
-              color: Colors.red,
-              child: const Text("Sonucu Gör"),
-            ),
-            style: ElevatedButton.styleFrom(
-              primary: Colors.lightBlue,
-              padding: const EdgeInsets.all(12),
-              textStyle: const TextStyle(fontSize: 22),
-            ),
-            onPressed: () {
-              String mesaj = SinavHesapla(55);
-              MesajGoster(context, mesaj);
+    return SafeArea(
+      child: Column(
+        children: [
+          Expanded(
+              child: ListView.builder(
+            itemCount: students.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(students[index].image),
+                ),
+                title: Text(
+                    students[index].firstName + " " + students[index].lastName),
+                subtitle: Text("Sınavdan Aldığı Not : " +
+                    students[index].grade.toString() +
+                    " [" +
+                    students[index].getStatus +
+                    "]"),
+                trailing: buildStatusIcon(students[index].grade),
+                onTap: () {
+                  setState(() {
+                    seciliOgrenci = students[index].firstName +
+                        " " +
+                        students[index].lastName;
+                  });
+
+                  print(seciliOgrenci);
+                },
+              );
             },
+          )),
+          Text("Seçili Yıkık: " + seciliOgrenci),
+          SizedBox(
+            height: 20,
           ),
-        ),
-      ],
+          Row(
+            children: <Widget>[
+              Flexible(
+                fit: FlexFit.tight,
+                flex: 1,
+                child: ElevatedButton(
+                  child: Row(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      const Icon(
+                        Icons.add,
+                        color: Colors.black,
+                      ),
+                      Flexible(
+                        fit: FlexFit.tight,
+                        flex: 1,
+                        child: const Text(
+                          "Yeni Yıkık",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 20, color: Colors.black),
+                        ),
+                      ),
+                    ],
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.lightGreen.shade300,
+                    padding: const EdgeInsets.all(12),
+                    textStyle: const TextStyle(fontSize: 20),
+                  ),
+                  onPressed: () {
+                    String mesaj = SinavHesapla(55);
+                    MesajGoster(context, mesaj);
+                  },
+                ),
+              ),
+              Flexible(
+                fit: FlexFit.tight,
+                flex: 1,
+                child: ElevatedButton(
+                  child: Title(
+                    color: Colors.red,
+                    child: Row(
+                      // ignore: prefer_const_literals_to_create_immutables
+                      children: [
+                        Icon(
+                          Icons.update,
+                          color: Colors.black,
+                        ),
+                        Flexible(
+                          fit: FlexFit.tight,
+                          flex: 1,
+                          child: const Text(
+                            "Güncelle",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20, color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.yellowAccent.shade700,
+                    padding: const EdgeInsets.all(12),
+                    textStyle: const TextStyle(fontSize: 20),
+                  ),
+                  onPressed: () {
+                    String mesaj = SinavHesapla(55);
+                    MesajGoster(context, mesaj);
+                  },
+                ),
+              ),
+              Flexible(
+                fit: FlexFit.tight,
+                flex: 1,
+                child: ElevatedButton(
+                  child: Title(
+                    color: Colors.red,
+                    child: Row(
+                      // ignore: prefer_const_literals_to_create_immutables
+                      children: [
+                        Icon(
+                          Icons.delete,
+                          color: Colors.black,
+                        ),
+                        Flexible(
+                          fit: FlexFit.tight,
+                          flex: 1,
+                          child: const Text(
+                            "Sil",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20, color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.redAccent.shade200,
+                    padding: const EdgeInsets.all(12),
+                    textStyle: const TextStyle(fontSize: 20),
+                  ),
+                  onPressed: () {
+                    String mesaj = SinavHesapla(55);
+                    MesajGoster(context, mesaj);
+                  },
+                ),
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 
