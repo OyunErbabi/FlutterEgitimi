@@ -17,16 +17,20 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String appTitle = "Yıkıklar Takip Sistemi";
 
-  String seciliOgrenci = "";
+  Student nullStudent = Student.withId(0, "", "", 0, "");
+  Student selectedStudent = Student.withId(0, "", "", 0, "");
+  bool selectedStatus = false;
+  int selectedIndex =
+      -1; //Eğer Sıfır yaparsam listenin en başındaki eleman otomatikman seçili geliyor
 
   List<Student> students = [
-    Student(
-        "Akif", "ERSOY", 70, "https://s1.dmcdn.net/v/1U46Y1Vj_axfqWLTO/x1080"),
-    Student("Gülce", "EFE", 25,
+    Student.withId(1, "Akif", "ERSOY", 70,
+        "https://s1.dmcdn.net/v/1U46Y1Vj_axfqWLTO/x1080"),
+    Student.withId(2, "Gülce", "EFE", 25,
         "https://memegenerator.net/img/images/15088125.jpg"),
-    Student("Engin", "DEMİROĞ", 45,
+    Student.withId(3, "Engin", "DEMİROĞ", 45,
         "https://cdn.vox-cdn.com/thumbor/eReqmSD1nz4TXHXzbPslJgRcKRQ=/0x0:3840x2400/1200x800/filters:focal(1613x893:2227x1507)/cdn.vox-cdn.com/uploads/chorus_image/image/62630829/The_Walking_Dead_TV_502082_3840x2400.0.jpg"),
-    Student("Berkay", "SUSAK", 10,
+    Student.withId(4, "Berkay", "SUSAK", 10,
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWg4rCQitwySMfgseQ7cHqeiYXQEWjnGvudCHi2alCtgIz_hJMF0W1Y1sWCab8jS-N1fU&usqp=CAU")
   ];
 
@@ -53,11 +57,11 @@ class _MyAppState extends State<MyApp> {
     return mesaj;
   }
 
-  void MesajGoster(BuildContext context, String mesaj) {
+  void MesajGoster(BuildContext context, String warnHeaderText, String mesaj) {
     var alert = AlertDialog(
       title: Builder(builder: (context) {
-        return const Text(
-          "Sınav Sonucu",
+        return Text(
+          warnHeaderText,
           textAlign: TextAlign.center,
         );
       }),
@@ -80,26 +84,35 @@ class _MyAppState extends State<MyApp> {
                   backgroundImage: NetworkImage(students[index].image),
                 ),
                 title: Text(
-                    students[index].firstName + " " + students[index].lastName),
-                subtitle: Text("Sınavdan Aldığı Not : " +
-                    students[index].grade.toString() +
-                    " [" +
-                    students[index].getStatus +
-                    "]"),
+                  students[index].firstName + " " + students[index].lastName,
+                  style: TextStyle(color: Colors.black),
+                ),
+                subtitle: Text(
+                  "Sınavdan Aldığı Not : " +
+                      students[index].grade.toString() +
+                      " [" +
+                      students[index].getStatus +
+                      "]",
+                  style: TextStyle(color: Colors.black),
+                ),
                 trailing: buildStatusIcon(students[index].grade),
+                selectedTileColor: Colors.blueGrey.shade200,
+                selected: index == selectedIndex,
                 onTap: () {
                   setState(() {
-                    seciliOgrenci = students[index].firstName +
-                        " " +
-                        students[index].lastName;
+                    selectedStudent = students[index];
+                    selectedIndex = index;
                   });
 
-                  print(seciliOgrenci);
+                  print(selectedStudent.firstName);
                 },
               );
             },
           )),
-          Text("Seçili Yıkık: " + seciliOgrenci),
+          Text("Seçili Yıkık: " +
+              selectedStudent.firstName +
+              " " +
+              selectedStudent.lastName),
           SizedBox(
             height: 20,
           ),
@@ -134,7 +147,7 @@ class _MyAppState extends State<MyApp> {
                   ),
                   onPressed: () {
                     String mesaj = SinavHesapla(55);
-                    MesajGoster(context, mesaj);
+                    MesajGoster(context, "Oluşturuldu", mesaj);
                   },
                 ),
               ),
@@ -170,7 +183,7 @@ class _MyAppState extends State<MyApp> {
                   ),
                   onPressed: () {
                     String mesaj = SinavHesapla(55);
-                    MesajGoster(context, mesaj);
+                    MesajGoster(context, "Güncellendi!", mesaj);
                   },
                 ),
               ),
@@ -205,8 +218,17 @@ class _MyAppState extends State<MyApp> {
                     textStyle: const TextStyle(fontSize: 20),
                   ),
                   onPressed: () {
-                    String mesaj = SinavHesapla(55);
-                    MesajGoster(context, mesaj);
+                    setState(() {
+                      students.remove(selectedStudent);
+                    });
+                    MesajGoster(
+                        context,
+                        "Silindi!",
+                        selectedStudent.firstName +
+                            " " +
+                            selectedStudent.lastName);
+                    selectedStudent =
+                        nullStudent; // Burada öğrenci seçildikten sonra aşağıda ismi kalmasın diye uçuruyoruz
                   },
                 ),
               )
@@ -219,11 +241,11 @@ class _MyAppState extends State<MyApp> {
 
   Widget buildStatusIcon(int grade) {
     if (grade > 50) {
-      return const Icon(Icons.done);
+      return const Icon(Icons.done, color: Colors.black);
     } else if (grade >= 40) {
-      return const Icon(Icons.album);
+      return const Icon(Icons.album, color: Colors.black);
     } else {
-      return const Icon(Icons.clear);
+      return const Icon(Icons.clear, color: Colors.black);
     }
   }
 }
