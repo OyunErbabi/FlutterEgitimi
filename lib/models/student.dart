@@ -26,6 +26,13 @@ class Student {
     image = _image;
   }
 
+  Student.withOutInfo() {
+    firstName = "";
+    lastName = "";
+    grade = 0;
+    image = "";
+  }
+
   String get getStatus {
     String outputText = "";
     if (grade >= 50) {

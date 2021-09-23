@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:temel_flutter/models/student.dart';
+import 'package:temel_flutter/screens/student_add.dart';
 
 void main() {
   runApp(
@@ -100,10 +103,13 @@ class _MyAppState extends State<MyApp> {
                 selected: index == selectedIndex,
                 onTap: () {
                   setState(() {
-                    selectedStudent = students[index];
-                    selectedIndex = index;
+                    if (selectedIndex == index) {
+                      selectedIndex = -1;
+                    } else {
+                      selectedIndex = index;
+                      selectedStudent = students[index];
+                    }
                   });
-
                   print(selectedStudent.firstName);
                 },
               );
@@ -146,8 +152,10 @@ class _MyAppState extends State<MyApp> {
                     textStyle: const TextStyle(fontSize: 20),
                   ),
                   onPressed: () {
-                    String mesaj = SinavHesapla(55);
-                    MesajGoster(context, "Oluşturuldu", mesaj);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => StudentAdd(students)));
                   },
                 ),
               ),
@@ -229,6 +237,7 @@ class _MyAppState extends State<MyApp> {
                             selectedStudent.lastName);
                     selectedStudent =
                         nullStudent; // Burada öğrenci seçildikten sonra aşağıda ismi kalmasın diye uçuruyoruz
+                    selectedIndex = -1;
                   },
                 ),
               )
