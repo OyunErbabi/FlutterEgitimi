@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:temel_flutter/models/student.dart';
 import 'package:temel_flutter/screens/student_add.dart';
@@ -39,13 +37,19 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          foregroundColor: const Color.fromRGBO(255, 255, 255, 1),
-          title: Text(appTitle),
-          backgroundColor: const Color.fromRGBO(255, 0, 0, 1),
-        ),
-        body: buildBody(context));
+    return WillPopScope(
+      onWillPop: () async {
+        print("TEST");
+        return true;
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            foregroundColor: const Color.fromRGBO(255, 255, 255, 1),
+            title: Text(appTitle),
+            backgroundColor: const Color.fromRGBO(255, 0, 0, 1),
+          ),
+          body: buildBody(context)),
+    );
   }
 
   String SinavHesapla(int puan) {
@@ -153,9 +157,14 @@ class _MyAppState extends State<MyApp> {
                   ),
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => StudentAdd(students)));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StudentAdd(students)))
+                        .then((value) => {
+                              setState(() {
+                                print("Sayfaya Geri Dönünce Refresh Atıldı!");
+                              })
+                            });
                   },
                 ),
               ),

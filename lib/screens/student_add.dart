@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:temel_flutter/fonksiyonlar.dart';
 import 'package:temel_flutter/main.dart';
 import 'package:temel_flutter/models/student.dart';
 
@@ -127,26 +126,12 @@ class _StudentAddState extends State {
         mainAxisAlignment: MainAxisAlignment.center,
       ),
       onPressed: () {
-        setState(() {});
         if (formKey.currentState!.validate()) {
           // Null check "!" işareti var dikkatli bak
           formKey.currentState!.save();
           students.add(student);
           SaveStudent();
-          Navigator.pop(context);
-          /*
-            Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (context) => MyApp()))
-                .then((value) {
-              setState(() {});
-            });
-            
-          Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => MyApp()))
-              .then((value) {
-            setState(() {});
-          });
-          */
+          Navigator.pop(context, "Örnek geri dönerken yollanan değer");
         }
       },
     );
