@@ -1,4 +1,4 @@
-package com.example.temel_flutter
+package com.OyunErbabi.YikikTakipSistemi
 
 import io.flutter.embedding.android.FlutterActivity
 

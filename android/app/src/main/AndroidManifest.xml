@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.temel_flutter">
+    package="com.OyunErbabi.YikikTakipSistemi">
    <application
-        android:label="temel_flutter"
+        android:label="Yikik Takip Sistemi"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
