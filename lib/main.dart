@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:temel_flutter/models/student.dart';
 import 'package:temel_flutter/screens/student_add.dart';
+import 'package:temel_flutter/screens/student_edit.dart';
 
 void main() {
   runApp(
@@ -133,6 +134,7 @@ class _MyAppState extends State<MyApp> {
                 flex: 1,
                 child: ElevatedButton(
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     // ignore: prefer_const_literals_to_create_immutables
                     children: [
                       const Icon(
@@ -140,12 +142,14 @@ class _MyAppState extends State<MyApp> {
                         color: Colors.black,
                       ),
                       Flexible(
-                        fit: FlexFit.tight,
+                        fit: FlexFit.loose,
                         flex: 1,
-                        child: const Text(
-                          "Yeni Yıkık",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20, color: Colors.black),
+                        child: FittedBox(
+                          child: const Text(
+                            "Yeni Yıkık",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20, color: Colors.black),
+                          ),
                         ),
                       ),
                     ],
@@ -175,6 +179,7 @@ class _MyAppState extends State<MyApp> {
                   child: Title(
                     color: Colors.red,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       // ignore: prefer_const_literals_to_create_immutables
                       children: [
                         Icon(
@@ -182,12 +187,15 @@ class _MyAppState extends State<MyApp> {
                           color: Colors.black,
                         ),
                         Flexible(
-                          fit: FlexFit.tight,
+                          fit: FlexFit.loose,
                           flex: 1,
-                          child: const Text(
-                            "Güncelle",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 20, color: Colors.black),
+                          child: FittedBox(
+                            child: const Text(
+                              "Güncelle",
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.black),
+                            ),
                           ),
                         ),
                       ],
@@ -199,8 +207,15 @@ class _MyAppState extends State<MyApp> {
                     textStyle: const TextStyle(fontSize: 20),
                   ),
                   onPressed: () {
-                    String mesaj = SinavHesapla(55);
-                    MesajGoster(context, "Güncellendi!", mesaj);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                StudentEdit(selectedStudent))).then((value) => {
+                          setState(() {
+                            print("Sayfaya Geri Dönünce Refresh Atıldı!");
+                          })
+                        });
                   },
                 ),
               ),
@@ -211,6 +226,7 @@ class _MyAppState extends State<MyApp> {
                   child: Title(
                     color: Colors.red,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       // ignore: prefer_const_literals_to_create_immutables
                       children: [
                         Icon(
@@ -218,12 +234,15 @@ class _MyAppState extends State<MyApp> {
                           color: Colors.black,
                         ),
                         Flexible(
-                          fit: FlexFit.tight,
+                          fit: FlexFit.loose,
                           flex: 1,
-                          child: const Text(
-                            "Sil",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 20, color: Colors.black),
+                          child: FittedBox(
+                            child: const Text(
+                              "Sil",
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.black),
+                            ),
                           ),
                         ),
                       ],

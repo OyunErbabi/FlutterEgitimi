@@ -3,24 +3,23 @@ import 'package:flutter/services.dart';
 import 'package:temel_flutter/main.dart';
 import 'package:temel_flutter/models/student.dart';
 
-class StudentAdd extends StatefulWidget {
-  List<Student> students = List.empty();
-  StudentAdd(List<Student> _students) {
-    students = _students;
+class StudentEdit extends StatefulWidget {
+  Student selectedStudent = new Student.withOutInfo();
+  StudentEdit(Student _student) {
+    selectedStudent = _student;
   }
   @override
   State<StatefulWidget> createState() {
-    return _StudentAddState(students);
+    return _StudentEditState(selectedStudent);
   }
 }
 
-class _StudentAddState extends State {
-  List<Student> students = List.empty();
-  _StudentAddState(List<Student> _students) {
-    students = _students;
+class _StudentEditState extends State {
+  Student selectedStudent = new Student.withOutInfo();
+  _StudentEditState(Student _student) {
+    selectedStudent = _student;
   }
 
-  Student student = Student.withOutInfo();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -50,6 +49,7 @@ class _StudentAddState extends State {
 
   Widget buildFirstNameField() {
     return TextFormField(
+      initialValue: selectedStudent.firstName,
       decoration: InputDecoration(
           label: Text("Yıkık Adı"), hintText: "Kulağına okunan ismi"),
       validator: (ValueKey) {
@@ -63,13 +63,14 @@ class _StudentAddState extends State {
       },
       onSaved: (String? value) {
         print("Save Edildi");
-        student.firstName = value.toString();
+        selectedStudent.firstName = value.toString();
       },
     );
   }
 
   Widget buildLastNameField() {
     return TextFormField(
+      initialValue: selectedStudent.lastName,
       decoration:
           InputDecoration(label: Text("Yıkık Soyadı"), hintText: "Evet Soyadı"),
       validator: (ValueKey) {
@@ -81,13 +82,14 @@ class _StudentAddState extends State {
         return null;
       },
       onSaved: (String? value) {
-        student.lastName = value.toString();
+        selectedStudent.lastName = value.toString();
       },
     );
   }
 
   Widget buildGradeField() {
     return TextFormField(
+      initialValue: selectedStudent.grade.toString(),
       keyboardType: TextInputType.number, // Burası Sadece numerik klavyeyi açar
       inputFormatters: <TextInputFormatter>[
         // burası ise text input alanına sadece rakam yazabilmeye izin veriyor
@@ -108,7 +110,7 @@ class _StudentAddState extends State {
         print("EditComplete");
       },
       onSaved: (String? value) {
-        student.grade = int.parse(value.toString());
+        selectedStudent.grade = int.parse(value.toString());
       },
     );
   }
@@ -129,7 +131,6 @@ class _StudentAddState extends State {
         if (formKey.currentState!.validate()) {
           // Null check "!" işareti var dikkatli bak
           formKey.currentState!.save();
-          students.add(student);
           SaveStudent();
           Navigator.pop(context, "Örnek geri dönerken yollanan değer");
         }
@@ -138,8 +139,8 @@ class _StudentAddState extends State {
   }
 
   void SaveStudent() {
-    print(student.firstName);
-    print(student.lastName);
-    print(student.grade);
+    print(selectedStudent.firstName);
+    print(selectedStudent.lastName);
+    print(selectedStudent.grade);
   }
 }
